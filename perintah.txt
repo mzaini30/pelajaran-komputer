@@ -1,0 +1,1 @@
+Gabungkan ./1. Sampul.png, ./2. Word.pdf, dan ./3. Excel.pdf menjadi satu file PDF ukuran A4 berjudul: Belajar Word dan Excel
