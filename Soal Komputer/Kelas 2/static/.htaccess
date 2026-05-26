@@ -1,0 +1,15 @@
+# Protect database.db
+<Files "database.db">
+  Order allow,deny
+  Deny from all
+</Files>
+
+# SPA Routing for Apache (index.php)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.php$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.php [L]
+</IfModule>
