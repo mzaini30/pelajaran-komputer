@@ -2,7 +2,7 @@
 	import Nav from "$lib/components/Nav.svelte";
 	import { onMount } from "svelte";
 
-	// Sound effect function
+	// Fungsi efek suara
 	function playBeep() {
 		const context = new (window.AudioContext || (window as any).webkitAudioContext)();
 		const oscillator = context.createOscillator();
@@ -19,6 +19,8 @@
 
 	function getImageUrl(url: string, w = 600) {
 		if (!url) return "";
+		// Jika path lokal, jangan pakai i0.wp.com kecuali URL publik
+		if (url.startsWith("/") || url.startsWith("./")) return url;
 		const cleanUrl = url.replace(/^https?:\/\//, "");
 		return `https://i0.wp.com/${cleanUrl}?w=${w}`;
 	}
@@ -31,48 +33,58 @@
 	];
 
 	const topScorers = [
-		{ name: "Erling Haaland", team: "Man City", goals: 27, assists: 5, photo: "https://imgchest.com/p/n87wgr96y8x" },
-		{ name: "Cole Palmer", team: "Chelsea", goals: 22, assists: 11, photo: "https://imgchest.com/p/pg73j2mzyrn" },
-		{ name: "Alexander Isak", team: "Newcastle", goals: 21, assists: 2, photo: "https://imgchest.com/p/lqyye9p67dn" }
+		{ name: "Erling Haaland", team: "Man City", goals: 27, assists: 5, photo: "/gambar/haaland.jpg" },
+		{ name: "Cole Palmer", team: "Chelsea", goals: 22, assists: 11, photo: "/gambar/cole.jpg" },
+		{ name: "Alexander Isak", team: "Newcastle", goals: 21, assists: 2, photo: "/gambar/alexander.jpg" }
 	];
 
 	const matches = [
-		{ home: "Real Madrid", away: "Dortmund", date: "02 JUN", time: "02:00", league: "Champions League", status: "Upcoming" },
-		{ home: "Indonesia", away: "Iraq", date: "06 JUN", time: "16:00", league: "World Cup Qualifiers", status: "Live" }
+		{ 
+			home: "Real Madrid", 
+			away: "Dortmund", 
+			homeLogo: "/gambar/real madrid.png",
+			awayLogo: "/gambar/borussia-dortmund-logo-png_seeklogo-293083.png",
+			date: "02 JUN", 
+			time: "02:00", 
+			league: "Liga Champions", 
+			status: "Mendatang" 
+		},
+		{ 
+			home: "Indonesia", 
+			away: "Iraq", 
+			homeLogo: "/gambar/indonesia.jpg",
+			awayLogo: "/gambar/flag-of-republic-of-iraq-on-a-textured-background-concept-collage-photo.jpg",
+			date: "06 JUN", 
+			time: "16:00", 
+			league: "Kualifikasi Piala Dunia", 
+			status: "Langsung" 
+		}
 	];
-
-	const playerSpotlight = {
-		name: "Kevin De Bruyne",
-		team: "Manchester City",
-		stats: { apps: 25, goals: 6, assists: 15, passAccuracy: "91%" },
-		bio: "The midfield maestro, known for his incredible vision and pinpoint passing.",
-		image: "https://imgchest.com/p/xny8z6m948e"
-	};
 </script>
 
 <Nav />
 
 <main class="max-w-[600px] mx-auto bg-apple-canvas min-h-screen pb-20">
-	<!-- Hero: Champions League Final -->
+	<!-- Hero: Final Liga Champions -->
 	<section class="apple-tile bg-apple-canvas pt-16 pb-12 px-6 text-center border-b border-apple-hairline">
-		<h1 class="text-5xl font-semibold tracking-tighter text-apple-ink mb-2">Champions League</h1>
-		<p class="text-2xl text-apple-ink-muted-80 mb-6 font-light">The road to Wembley ends here.</p>
+		<h1 class="text-5xl font-semibold tracking-tighter text-apple-ink mb-2">Liga Champions</h1>
+		<p class="text-2xl text-apple-ink-muted-80 mb-6 font-light">Jalan menuju Wembley berakhir di sini.</p>
 		<div class="flex justify-center space-x-6 mb-10">
-			<button on:click={playBeep} class="text-apple-blue text-lg hover:underline">Learn more ></button>
-			<button on:click={playBeep} class="text-apple-blue text-lg hover:underline">Buy tickets ></button>
+			<button on:click={playBeep} class="text-apple-blue text-lg hover:underline">Pelajari selengkapnya ></button>
+			<button on:click={playBeep} class="text-apple-blue text-lg hover:underline">Beli tiket ></button>
 		</div>
 		<div class="relative group">
 			<img
-				src={getImageUrl("https://imgchest.com/p/dl7pvg2z7ox")}
+				src="/gambar/ucl.jpg"
 				alt="UCL Trophy"
 				class="w-full max-w-xs mx-auto drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
 			/>
 		</div>
 	</section>
 
-	<!-- Match Center (Upcoming/Live) -->
+	<!-- Match Center (Mendatang/Langsung) -->
 	<section class="p-6 bg-apple-parchment">
-		<h2 class="text-2xl font-semibold mb-6 text-apple-ink">Match Center</h2>
+		<h2 class="text-2xl font-semibold mb-6 text-apple-ink">Pusat Pertandingan</h2>
 		<div class="space-y-4">
 			{#each matches as match}
 				<div
@@ -81,11 +93,11 @@
 				>
 					<div class="flex justify-between items-center mb-3">
 						<span class="text-[10px] font-bold uppercase tracking-widest text-apple-ink-muted-48">{match.league}</span>
-						<span class="text-[10px] font-bold uppercase tracking-widest {match.status === 'Live' ? 'text-red-500' : 'text-apple-blue'}">{match.status}</span>
+						<span class="text-[10px] font-bold uppercase tracking-widest {match.status === 'Langsung' ? 'text-red-500' : 'text-apple-blue'}">{match.status}</span>
 					</div>
 					<div class="flex justify-between items-center px-2">
 						<div class="flex flex-col items-center w-1/3">
-							<div class="w-12 h-12 bg-apple-parchment rounded-full mb-2 flex items-center justify-center font-bold text-xs">{match.home[0]}</div>
+							<img src={match.homeLogo} alt={match.home} class="w-12 h-12 object-contain mb-2" />
 							<span class="text-sm font-medium text-center">{match.home}</span>
 						</div>
 						<div class="flex flex-col items-center">
@@ -93,7 +105,7 @@
 							<span class="text-[10px] text-apple-ink-muted-48">{match.date}</span>
 						</div>
 						<div class="flex flex-col items-center w-1/3">
-							<div class="w-12 h-12 bg-apple-parchment rounded-full mb-2 flex items-center justify-center font-bold text-xs">{match.away[0]}</div>
+							<img src={match.awayLogo} alt={match.away} class="w-12 h-12 object-contain mb-2" />
 							<span class="text-sm font-medium text-center">{match.away}</span>
 						</div>
 					</div>
@@ -102,18 +114,18 @@
 		</div>
 	</section>
 
-	<!-- Standings Table -->
+	<!-- Tabel Klasemen -->
 	<section class="p-6 bg-white">
-		<h2 class="text-2xl font-semibold mb-6 text-apple-ink">Premier League Table</h2>
+		<h2 class="text-2xl font-semibold mb-6 text-apple-ink">Klasemen Liga Inggris</h2>
 		<div class="overflow-hidden border border-apple-hairline rounded-apple-lg">
 			<table class="w-full text-left text-sm">
 				<thead class="bg-apple-parchment text-apple-ink-muted-48 uppercase text-[10px] tracking-wider">
 					<tr>
 						<th class="px-4 py-3">Pos</th>
-						<th class="px-4 py-3">Team</th>
-						<th class="px-4 py-3 text-center">PL</th>
-						<th class="px-4 py-3 text-center">GD</th>
-						<th class="px-4 py-3 text-right">Pts</th>
+						<th class="px-4 py-3">Tim</th>
+						<th class="px-4 py-3 text-center">Main</th>
+						<th class="px-4 py-3 text-center">SG</th>
+						<th class="px-4 py-3 text-right">Poin</th>
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-apple-hairline">
@@ -129,39 +141,12 @@
 				</tbody>
 			</table>
 		</div>
-		<button on:click={playBeep} class="w-full text-center py-4 text-apple-blue text-sm hover:underline">View full table ></button>
+		<button on:click={playBeep} class="w-full text-center py-4 text-apple-blue text-sm hover:underline">Lihat klasemen lengkap ></button>
 	</section>
 
-	<!-- Player Spotlight -->
-	<section class="apple-tile bg-apple-tile-1 text-white py-16 px-8 relative overflow-hidden">
-		<div class="relative z-10 max-w-sm">
-			<span class="text-[10px] font-bold uppercase tracking-widest text-apple-blue mb-4 block">Player Spotlight</span>
-			<h2 class="text-4xl font-semibold mb-2">{playerSpotlight.name}</h2>
-			<p class="text-lg opacity-80 mb-8 leading-relaxed">{playerSpotlight.bio}</p>
-			
-			<div class="grid grid-cols-2 gap-4 mb-10">
-				<div class="bg-white/10 backdrop-blur-md p-4 rounded-apple-md">
-					<span class="block text-[10px] uppercase tracking-wider opacity-60">Assists</span>
-					<span class="text-2xl font-bold">{playerSpotlight.stats.assists}</span>
-				</div>
-				<div class="bg-white/10 backdrop-blur-md p-4 rounded-apple-md">
-					<span class="block text-[10px] uppercase tracking-wider opacity-60">Accuracy</span>
-					<span class="text-2xl font-bold">{playerSpotlight.stats.passAccuracy}</span>
-				</div>
-			</div>
-			
-			<button on:click={playBeep} class="apple-button-primary">Full Statistics</button>
-		</div>
-		<img
-			src={getImageUrl(playerSpotlight.image)}
-			alt={playerSpotlight.name}
-			class="absolute -right-20 bottom-0 w-80 object-contain drop-shadow-2xl opacity-40 grayscale hover:grayscale-0 transition-all duration-700"
-		/>
-	</section>
-
-	<!-- Top Scorers Grid -->
+	<!-- Grid Pencetak Gol Terbanyak -->
 	<section class="p-6 bg-apple-parchment">
-		<h2 class="text-2xl font-semibold mb-6 text-apple-ink">Golden Boot Race</h2>
+		<h2 class="text-2xl font-semibold mb-6 text-apple-ink">Perebutan Sepatu Emas</h2>
 		<div class="grid grid-cols-1 gap-4">
 			{#each topScorers as player}
 				<div
@@ -169,7 +154,7 @@
 					on:click={playBeep}
 				>
 					<img
-						src={getImageUrl(player.photo, 100)}
+						src={player.photo}
 						alt={player.name}
 						class="w-16 h-16 rounded-full object-cover bg-apple-parchment"
 					/>
@@ -179,27 +164,27 @@
 					</div>
 					<div class="text-right">
 						<span class="block text-xl font-bold text-apple-ink">{player.goals}</span>
-						<span class="text-[8px] uppercase font-bold tracking-widest text-apple-ink-muted-48">Goals</span>
+						<span class="text-[8px] uppercase font-bold tracking-widest text-apple-ink-muted-48">Gol</span>
 					</div>
 				</div>
 			{/each}
 		</div>
 	</section>
 
-	<!-- Footer Info -->
+	<!-- Info Footer -->
 	<section class="p-12 text-center bg-white border-t border-apple-divider-soft">
-		<h3 class="text-lg font-semibold mb-4 text-apple-ink">Never miss a moment.</h3>
-		<p class="text-sm text-apple-ink-muted-48 mb-8">Get the latest football news and live scores delivered to your pocket.</p>
+		<h3 class="text-lg font-semibold mb-4 text-apple-ink">Jangan lewatkan setiap momen.</h3>
+		<p class="text-sm text-apple-ink-muted-48 mb-8">Dapatkan berita sepak bola terbaru dan skor langsung di saku Anda.</p>
 		<div class="flex flex-col items-center space-y-4">
-			<button on:click={playBeep} class="apple-button-primary px-10">Subscribe Now</button>
-			<p class="text-[10px] text-apple-ink-muted-48">Available on iOS and Android</p>
+			<button on:click={playBeep} class="apple-button-primary px-10">Berlangganan Sekarang</button>
+			<p class="text-[10px] text-apple-ink-muted-48">Tersedia di iOS dan Android</p>
 		</div>
 	</section>
 </main>
 
 <footer class="bg-apple-parchment p-12 text-center text-apple-ink-muted-48 border-t border-apple-divider-soft">
 	<p class="text-[10px] mb-2 uppercase tracking-widest">Football Hub 2026</p>
-	<p class="text-xs">© 2026 Zen Pelajaran Komputer. All rights reserved.</p>
+	<p class="text-xs">© 2026 Zen Pelajaran Komputer. Hak cipta dilindungi undang-undang.</p>
 </footer>
 
 <style>
