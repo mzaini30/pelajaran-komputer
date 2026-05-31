@@ -1,1 +1,12 @@
-Buatkan website info sepak bola
+Di beranda, bahasanya ubah jadi bahasa Indonesia semua. Terus, ada penyesuaian pada gambar
+
+UCL Trophy : ./static/gambar/ucl.jpg
+Real Madrid : ./static/gambar/real madrid.png
+Dortmund : ./static/gambar/borussia-dortmund-logo-png_seeklogo-293083.png
+Indonesia : ./static/gambar/indonesia.jpg
+Iraq : ./static/gambar/flag-of-republic-of-iraq-on-a-textured-background-concept-collage-photo.jpg
+Haaland : ./static/gambar/haaland.jpg
+Cole Palmer : ./static/gambar/cole.jpg
+Alexander Isak : ./static/gambar/alexander.jpg
+
+Yang Kevin De Bruyne itu hapus aja fotonya
